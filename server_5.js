@@ -5,6 +5,7 @@ const app = require ('./app');
 const normalizePort = val => {
 
     // normalizePort() :  renvoie un port valide, qu'il soit fourni sous la forme d'un numéro ou d'une chaîne ;
+
     const port = parseInt(val, 10);
 
     if (isNaN(port)) {
@@ -15,10 +16,6 @@ const normalizePort = val => {
     }
     return false;
 };
-
-const port = normalizePort(process.env.PORT ||'3000');
-app.set('port', port);
-
 
 const errorHandler = error => {
     // errorHandler() :  recherche les différentes erreurs et les gère de manière appropriée. Elle est ensuite enregistrée dans le serveur ;
@@ -40,6 +37,8 @@ const errorHandler = error => {
             throw error;
     }
 };
+
+// app.set('port', 3005 || process.env.PORT); // replaced by above
 
 const server = http.createServer(app);
 
