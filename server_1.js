@@ -14,8 +14,9 @@ server.listen( 3005 || process.env.PORT);  // écouter les requêtes envoyées
 //--------------------------------------------------------------------------
 
 
+/* 
 //  Option 2
-//----------
+// ----------
 
  import http from 'http';  // what about that ?
 
@@ -25,3 +26,5 @@ const server = http.createServer((req, res) => {
 
 
 server.listen( 3005 || process.env.PORT);  // écouter les requêtes envoyées
+
+ */

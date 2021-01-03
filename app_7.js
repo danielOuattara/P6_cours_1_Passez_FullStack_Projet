@@ -2,10 +2,10 @@ const express = require ('express');  // importe 'express'
 
 const app = express(); //  cree une application express
 
-app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+app.use((req, res, next) => {  //  
+    res.setHeader('Access-Control-Allow-Origin', '*'); // permet à l'application d'accéder à l'API sans problème depuis n'importe quelle origine.
+    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');  // permet à l'application d'accéder à l'API sans problème depuis n'importe quelle origine.
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');  // envoyer des requêtes avec les méthodes mentionnées ( GET ,POST , etc.)
     next();
 });
 
