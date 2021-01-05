@@ -1,7 +1,7 @@
-// route GET + CORS resolu !
+// P2C3: Récupérer des données -->  Implementer GET pour 1 seul objet
 
 const http = require('http');  // importer le package de serveur http de Node.js. L'objet 'http' permet de créer un serveur.
-const app = require ('./app_7.js');
+const app = require ('./app_13.js');
 
 
 const normalizePort = val => {

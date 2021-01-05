@@ -1,10 +1,13 @@
+
+// P2C1 : Implemantation MongoDB + Mongooose
 const express = require('express');  // importe 'express'
 const bodyParser = require('body-parser');
 
 const app = express(); //  cree une application express
+
 const  mongoose = require('mongoose'); // importe Mongoose
 
-mongoose.connect('mongodb+srv://danielboua:**CoplanFX15**@cluster0.vndw3.mongodb.net/<dbname>?retryWrites=true&w=majority',
+mongoose.connect('mongodb+srv://danielboua:**CoplanFX15**@cluster0.vndw3.mongodb.net/test?retryWrites=true&w=majority',
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
@@ -34,30 +37,22 @@ app.use('/api/stuff', (req, res, next) => {
 
     const stuff = [
         {
-            _id:'1234',
-            title: 'book',
-            description: '', 
-            imageUrl: '',
-            price: 2900,
-            userId: ''
+          _id: 'oeihfzeoi',
+          title: 'Mon premier objet',
+          description: 'Les infos de mon premier objet',
+          imageUrl: 'https://cdn.pixabay.com/photo/2019/06/11/18/56/camera-4267692_1280.jpg',
+          price: 4900,
+          userId: 'qsomihvqios',
         },
         {
-            _id:'1235',
-            title: 'chair',
-            description: '',
-            imageUrl: '',
-            price: 1500,
-            userId: ''
+          _id: 'oeihfzeomoihi',
+          title: 'Mon deuxième objet',
+          description: 'Les infos de mon deuxième objet',
+          imageUrl: 'https://cdn.pixabay.com/photo/2019/06/11/18/56/camera-4267692_1280.jpg',
+          price: 2900,
+          userId: 'qsomihvqios',
         },
-        {
-            _id:'1236',
-            title: 'bicycle',
-            description: '',
-            imageUrl: '',
-            price: 15000,
-            userId: ''
-        }
-    ]; 
+      ]; 
 
     res.status(200).json(stuff);
 
