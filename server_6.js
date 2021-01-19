@@ -1,10 +1,7 @@
-
-// route GET + CORS NON resolu !
-
-
+// route GET + CORS NON resolu ! 
+// P1C5
 const http = require('http');  // importer le package de serveur http de Node.js. L'objet 'http' permet de créer un serveur.
 const app = require ('./app_6.js');
-
 
 const normalizePort = val => {
 

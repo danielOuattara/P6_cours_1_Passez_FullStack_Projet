@@ -9,7 +9,7 @@ const  mongoose = require('mongoose'); // importe Mongoose
 
 const Thing = require('./models/Thing.js');
 
-mongoose.connect('mongodb+srv://danielboua:**CoplanFX15**@cluster0.vndw3.mongodb.net/test?retryWrites=true&w=majority',
+mongoose.connect('mongodb+srv://danielboua:gqhQrhjN4YmA3mjSgqhQrhjN4YmA3mjS@cluster0.vndw3.mongodb.net/test?retryWrites=true&w=majority',
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))

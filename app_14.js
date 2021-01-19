@@ -9,11 +9,12 @@ const  mongoose = require('mongoose'); // importe Mongoose
 
 const Thing = require('./models/Thing.js');
 
-mongoose.connect('mongodb+srv://danielboua:**CoplanFX15**@cluster0.vndw3.mongodb.net/test?retryWrites=true&w=majority',
+mongoose.connect('mongodb+srv://danielboua:gqhQrhjN4YmA3mjSgqhQrhjN4YmA3mjS@cluster0.vndw3.mongodb.net/test?retryWrites=true&w=majority',
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
+
 
 
 app.use((req, res, next) => {
@@ -24,25 +25,26 @@ app.use((req, res, next) => {
 });
 
 
+
 app.use(bodyParser.json());
+
+
 
 app.post('/api/stuff', (req, res, next) => { 
     delete req.body._id;
     const thing = new Thing({
         ...req.body
     });
-
     thing.save()
-        .then(() => res.status(201).json({message: 'Objet Bien Enregistré !'}),
-                    console.log("OK !!"))
+        .then(() => res.status(201).json({message: 'Objet Bien Enregistré !'}))
         .catch( error => res.status(400).json({error}));
 });
 
 
+
 // ajout route DELETE pour supprimer un l'objet:
 //-----------------------------------------------
-
-app.delete('/api/stuff/:id', (req, res, next) => {
+app.delete('/api/stuff/:id', (req, res, next) => { 
   Thing.deleteOne({_id: req.params.id})
   .then( () => res.status(200).json( {message: 'Suppression Réussie !'}))
   .catch( error => res.status(400).json({error}));
@@ -52,7 +54,6 @@ app.delete('/api/stuff/:id', (req, res, next) => {
 
 // ajout route PUT pour la modification de l'objet:
 //-----------------------------------------------
-
 app.put('/api/stuff/:id', (req, res, next) => {
   Thing.updateOne({ _id: req.params.id}, {...req.body, _id: req.params.id})
     .then( () => res.status(200).json( {message: 'Modification Réussie !'}))
@@ -60,9 +61,9 @@ app.put('/api/stuff/:id', (req, res, next) => {
 });
 
 
+
 //
 //--------------------------------------------------
-
 app.get('/api/stuff/:id', (req, res, next) => {
   // req.params.id  // access à :
   Thing.findOne ({ _id: req.params.id})
@@ -71,10 +72,9 @@ app.get('/api/stuff/:id', (req, res, next) => {
 });
 
 
+
 //
 //----------------------------------------------------
-
-
 app.get('/api/stuff', (req, res, next) => {
     Thing.find()
         .then( things => res.status(200).json(things))
