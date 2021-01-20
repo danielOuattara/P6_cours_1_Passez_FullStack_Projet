@@ -25,19 +25,9 @@ exports.deleteThing = (req, res, next) => {
 
 
 exports.updateThing = (req, res, next) => {
-
-  const thingObject = req.file ?
-  {
-    ...JSON.parse(req.body.thing),  //si update d'image dans cet update
-    imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}` 
-  }
-  :
-  {
-    ...req.body // si pas d'update image dans cette update
-  }
-  Thing.updateOne({ _id: req.params.id}, {...thingObject, _id: req.params.id})
-    .then( () => res.status(200).json( {message: 'Modification Réussie !'}))
-    .catch( error => res.status(400).json({error}));
+    Thing.updateOne({ _id: req.params.id}, {...req.body, _id: req.params.id})
+      .then( () => res.status(200).json( {message: 'Modification Réussie !'}))
+      .catch( error => res.status(400).json({error}));
   }
 
   exports.getOneThing = (req, res, next) => {
