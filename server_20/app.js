@@ -5,17 +5,17 @@ const express     = require('express');  // importe 'express'
 const bodyParser  = require('body-parser');
 
 const app         = express(); //  cree une application express
-const  mongoose   = require('mongoose'); // importe Mongoose
+const mongoose    = require('mongoose'); // importe Mongoose
 
-const stuffRoutes = require('./routes/stuff.js')
-const userRoutes  = require('./routes/user.js')
+const stuffRoutes = require('./routes/stuffRoutes.js')
+const userRoutes  = require('./routes/userRoutes.js')
 
-mongoose.connect('mongodb+srv://danielboua:gqhQrhjN4YmA3mjSgqhQrhjN4YmA3mjS@cluster0.vndw3.mongodb.net/test?retryWrites=true&w=majority',
+
+mongoose.connect('mongodb+srv://gofullstack:XiAtERybkvrKa4tXiAtERybkvrKa4tXiAtERybkvrKa4tXiAtERybkvrKa4t@cluster0.vndw3.mongodb.net/gofullstack?retryWrites=true&w=majority',
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
-
 
 
 app.use((req, res, next) => {
@@ -26,10 +26,12 @@ app.use((req, res, next) => {
 });
 
 
-
 app.use(bodyParser.json());
+
+
 app.use('/api/stuff', stuffRoutes)
-app.use('/api/auth', userRoutes)
+app.use('/api/auth' , userRoutes)
+
 
 module.exports = app;  //  rend 'app' accessible depuis les autres fichiers du projet
 
