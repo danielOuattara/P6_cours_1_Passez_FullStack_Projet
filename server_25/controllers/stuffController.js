@@ -5,6 +5,7 @@ const fs = require('fs');
 exports.createThing = (req, res, next) => { 
     const thingObject = JSON.parse( req.body.thing);
     delete thingObject._id;
+    console.log(req.file)
     const thing = new Thing(
       {
         ...thingObject,
@@ -12,50 +13,171 @@ exports.createThing = (req, res, next) => {
       }
     );
     thing.save()
-      .then(() => res.status(201).json({message: 'Objet Bien Enregistré !'}))
-      .catch( error => res.status(400).json({error}));
+    .then(() => res.status(201).json({message: 'Objet Bien Enregistré !'}))
+    .catch( error => res.status(400).json({error}));
 } 
 
+//--------------------------------------------------------------------------------
+// exports.deleteThing = (req, res, next) => { 
+//   Thing.findOne({_id: req.params.id })
+//   .then( thing => {
+//     if (!thing) {
+//       return res.status(404).send('Item not found!')
+//     }
+//     if (thing.userId !== req.auth.userId) {
+//       return res.status(401).send('Request Non Authorized ')
+//     }
+//     const filename = thing.imageUrl.split('/images/')[1];
+//     fs.unlink( `images/${filename}`, (err, data) => {
+//       if(err) {
+//         return res.status(400).send(err.message)
+//       }
+//       thing.delete()
+//       .then( () => res.status(200).json( {message: 'Suppression Réussie !'}))
+//       .catch( error => res.status(400).json({error}));
+//     })
+//   })
+//   .catch( error => res.status(500).json({error}))
+// }
 
-exports.deleteThing = (req, res, next) => { 
-    Thing.findOne({_id: req.params.id })
-      .then( thing => {
-        const filename = thing.imageUrl.split('/images/')[1];
-        fs.unlink( `images/${filename}`, () => {
-            Thing.deleteOne({_id: req.params.id})
-                .then( () => res.status(200).json( {message: 'Suppression Réussie !'}))
-                .catch( error => res.status(400).json({error}));
-            })
-      })
-      .catch( error => res.status(500).json({error}))
+//---------------------------------------------------------------------------------------
+exports.deleteThing = async (req, res, next) => {
+  try {
+    const thing = await Thing.findOne({_id: req.params.id})
+    if(!thing) {
+      return res.status(404).send('Item not not found!')
+    }
+    if(thing.userId !== req.auth.userId) {
+      return res.status(401).send('Request Non Authorized ')
+    }  
+    const filename = thing.imageUrl.split('/images/')[1];
+    fs.unlink(`images/${filename}`, (err, data) => {
+      if(err) {
+        return res.status(500).send(err.message)
+      }
+      thing.delete();
+      res.status(200).json({message: 'Suppression Réussie !'})
+    })
 
+  } catch (error) {
+    res.status(500).json(error.message);
+  } 
 }
 
-exports.updateThing = (req, res, next) => {
+//----------------------------------------------------------------------
+// exports.updateThing = (req, res, next) => {
+  
+//    const thingObject = req.file ?
+//   {
+//     ...JSON.parse(req.body.thing),  //si update d'image dans cet update
+//     imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}` 
+//   }
+//   :
+//   {
+//     ...req.body // si pas d'update image dans cette update
+//   }
+//   Thing.updateOne({ _id: req.params.id}, {...thingObject, _id: req.params.id})
+//   .then( () => res.status(200).json( {message: 'Modification Réussie !'}))
+//   .catch( error => res.status(400).json({error}));
+// }
 
-  const thingObject = req.file ?
-  {
-    ...JSON.parse(req.body.thing),  //si update d'image dans cet update
-    imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}` 
-  }
-  :
-  {
-    ...req.body // si pas d'update image dans cette update
-  }
-  Thing.updateOne({ _id: req.params.id}, {...thingObject, _id: req.params.id})
-    .then( () => res.status(200).json( {message: 'Modification Réussie !'}))
-    .catch( error => res.status(400).json({error}));
-  }
+//----------------------------------------------------------------------
 
-  exports.getOneThing = (req, res, next) => {
-    // req.params.id  // access à :
-    Thing.findOne ({ _id: req.params.id})
-      .then( thing =>  res.status(200).json(thing))
-      .catch( error => res.status(404).json({error}))
-  }
+// exports.updateThing = async (req, res, next) => { 
+//   try {
+//     const thing = await Thing.findOne({_id: req.params.id});
+//     if(!thing) {
+//       return res.status(404).send('Item not found!')
+//     }
+//     if(thing.userId !== req.auth.userId) {
+//       return res.status(401).send('Request Non Authorized ')
+//     }
 
-  exports.getAllThing = (req, res, next) => {
-    Thing.find()
-        .then( things => res.status(200).json(things))
-        .catch( error => res.status(400).json({error}));
+//     const thingObject = req.file ? 
+//       {
+//         ...JSON.parse(req.body.thing), 
+//         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+//       } 
+//       :
+//       {...req.body } 
+
+//     if(req.file) {
+//       const filename = thing.imageUrl.split('/images/')[1];
+//       fs.unlink(`images/${filename}`, (err, data) => {
+//         if(err) {
+//           return res.status(500).send(err.message)
+//         }
+//       });
+//       await thing.update({...thingObject, _id: req.params.id})
+//       res.status(201).json( {message: 'Update Successfull !'})
+//     } else {      
+//       await thing.update({...thingObject, _id: req.params.id})
+//       res.status(201).json( {message: 'Update Successfull !'})
+//     } 
+//   } catch (error) {
+//     res.status(500).json({error})
+//   }
+// }
+// //----------------------------------------------------------------------
+
+exports.updateThing = (req, res, next) => { 
+  Thing.findOne({_id: req.params.id})
+  .then((thing) => {
+    if(!thing) {
+      return res.status(404).send('Item not found!')
+    }
+    if(thing.userId !== req.auth.userId) {
+      return res.status(401).send('Request Non Authorized ')
+    }
+
+    const thingObject = req.file ? 
+    {
+      ...JSON.parse(req.body.thing), //si update d'image dans cet update
+      imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+    } 
+    :
+    {...req.body } // si pas d'update image dans cette update
+
+    if(req.file) {
+      const filename = thing.imageUrl.split('/images/')[1];
+      fs.unlink(`images/${filename}`, (err, data) => {
+        if(err) {
+          return res.status(500).send(err.message)
+        }
+      });
+      thing.updateOne( {...thingObject, _id: req.params.id})
+      .then(() => {
+        res.status(201).json( {message: 'Update Successfull !'})
+      })
+      .catch( error => res.status(500).json({error})); 
+      
+    } else {      
+     thing.updateOne({...thingObject, _id: req.params.id})
+     .then(() => {
+       res.status(201).json( {message: 'Update Successfull !'})
+     })
+     .catch( error => res.status(500).json({error})); 
+    } 
+  })
+  .catch( error => res.status(500).json({error})); 
+}
+
+
+
+
+
+
+//----------------------------------------------------------------------
+exports.getOneThing = (req, res, next) => {
+  // req.params.id  // access à :
+  Thing.findOne ({ _id: req.params.id})
+  .then( thing =>  res.status(200).json(thing))
+  .catch( error => res.status(404).json({error}))
+}
+
+//----------------------------------------------------------------------
+exports.getAllThing = (req, res, next) => {
+  Thing.find()
+  .then( things => res.status(200).json(things))
+  .catch( error => res.status(400).json({error}));
 }

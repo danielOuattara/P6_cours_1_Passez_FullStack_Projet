@@ -4,9 +4,7 @@ const app = require ('./app_2.js');
 
 app.set('port', 3000 || process.env.PORT);
 
-const server = http.createServer((req, res) => {
-    res.end('Ici la reponse serveur')
-});
+const server = http.createServer(app);
 
 
 server.listen( 3000 || process.env.PORT);  // écouter les requêtes envoyées

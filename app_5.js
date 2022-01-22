@@ -16,6 +16,7 @@ app.use((req, res, next) => {  // configuration réponse simple
     res.json({ message: 'Requête traîtée !'});
     next();
 });
+
 app.use((req, res) => {  // configuration réponse simple
     console.log('Réponse envoyée avec succès');
 });

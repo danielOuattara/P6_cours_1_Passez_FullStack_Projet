@@ -1,10 +1,8 @@
 const express = require('express');
 const router  = express.Router();
-const Thing   = require('../../models/Thing.js');
+const Thing   = require('./../../models/Thing.js');
 
 
-
-//
 //-----------------------------------------------------
 router.post('/', (req, res, next) => { 
     delete req.body._id;

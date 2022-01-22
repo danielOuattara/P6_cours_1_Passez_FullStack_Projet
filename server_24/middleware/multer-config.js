@@ -10,10 +10,15 @@ const MIME_TYPES = {
 const storage = multer.diskStorage(
     {
         destination: (req, file, callback) => callback( null, 'images'),
-        filename:    (req, file, callback) => {
-            const name      = file.originalname.split(' ').join('_');
+        // filename: (req, file, callback) => {
+        //     const name = file.originalname.split(' ').join('_');
+        //     const extension = MIME_TYPES[file.mimetype];
+        //     callback(null, name + Date.now() + '.' + extension);
+        // }
+        filename: (req, file, callback) => {
+            const name = file.originalname.split(' ').join('_').split('.').slice(0, -1);
             const extension = MIME_TYPES[file.mimetype];
-            callback(null, name + Date.now() + '.' + extension);
+            callback(null, name + ('_') + Date.now() + '.' + extension)
         }
     }
 );

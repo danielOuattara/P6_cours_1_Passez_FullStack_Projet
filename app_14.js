@@ -1,20 +1,22 @@
+require('dotenv').config();
+// P2C3: Enregistrer er récuperer des données
 
-// P2C4: Completons le CRUD: ajoutons modification & suppression
-
-const express = require('express');  // importe 'express'
+const express = require('express'); // importe 'express'
 const bodyParser = require('body-parser');
 
 const app = express(); //  cree une application express
-const  mongoose = require('mongoose'); // importe Mongoose
+const mongoose = require('mongoose'); // importe Mongoose
 
 const Thing = require('./models/Thing.js');
 
-mongoose.connect('mongodb+srv://danielboua:gqhQrhjN4YmA3mjSgqhQrhjN4YmA3mjS@cluster0.vndw3.mongodb.net/test?retryWrites=true&w=majority',
-  { useNewUrlParser: true,
-    useUnifiedTopology: true })
+const MONGO_URI = process.env.MONGO_URI;
+
+mongoose.connect(MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
-
 
 
 app.use((req, res, next) => {
@@ -24,11 +26,7 @@ app.use((req, res, next) => {
     next();
 });
 
-
-
 app.use(bodyParser.json());
-
-
 
 app.post('/api/stuff', (req, res, next) => { 
     delete req.body._id;
@@ -41,7 +39,6 @@ app.post('/api/stuff', (req, res, next) => {
 });
 
 
-
 // ajout route DELETE pour supprimer un l'objet:
 //-----------------------------------------------
 app.delete('/api/stuff/:id', (req, res, next) => { 
@@ -49,7 +46,6 @@ app.delete('/api/stuff/:id', (req, res, next) => {
   .then( () => res.status(200).json( {message: 'Suppression Réussie !'}))
   .catch( error => res.status(400).json({error}));
 });
-
 
 
 // ajout route PUT pour la modification de l'objet:
@@ -61,8 +57,6 @@ app.put('/api/stuff/:id', (req, res, next) => {
 });
 
 
-
-//
 //--------------------------------------------------
 app.get('/api/stuff/:id', (req, res, next) => {
   // req.params.id  // access à :
@@ -72,8 +66,6 @@ app.get('/api/stuff/:id', (req, res, next) => {
 });
 
 
-
-//
 //----------------------------------------------------
 app.get('/api/stuff', (req, res, next) => {
     Thing.find()

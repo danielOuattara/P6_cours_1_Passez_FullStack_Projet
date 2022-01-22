@@ -1,20 +1,21 @@
+require('dotenv').config();
+const express = require('express'); // importe 'express'
+const bodyParser = require('body-parser');
 
-// P2C4: Completons le CRUD: ajoutons modification & suppression
-
-const express     = require('express');  // importe 'express'
-const bodyParser  = require('body-parser');
-
-const app         = express(); //  cree une application express
-const mongoose    = require('mongoose'); // importe Mongoose
-const path        = require('path');
+const app = express(); //  cree une application express
+const mongoose = require('mongoose'); // importe Mongoose
+const path = require('path');
 
 const stuffRoutes = require('./routes/stuffRoutes.js')
-const userRoutes  = require('./routes/userRoutes.js')
+const userRoutes = require('./routes/userRoutes.js')
 
+const MONGO_URI = process.env.MONGO_URI;
 
-mongoose.connect('mongodb+srv://gofullstack:XiAtERybkvrKa4tXiAtERybkvrKa4tXiAtERybkvrKa4tXiAtERybkvrKa4t@cluster0.vndw3.mongodb.net/gofullstack?retryWrites=true&w=majority',
-  { useNewUrlParser: true,
-    useUnifiedTopology: true })
+mongoose.connect(MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true
+  })
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
 

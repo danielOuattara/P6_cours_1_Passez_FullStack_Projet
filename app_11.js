@@ -1,4 +1,4 @@
-
+require('dotenv').config();
 // P2C3: Enregistrer er récuperer des données
 
 const express = require('express');  // importe 'express'
@@ -9,7 +9,9 @@ const  mongoose = require('mongoose'); // importe Mongoose
 
 const Thing = require('./models/Thing.js');
 
-mongoose.connect('mongodb+srv://danielboua:gqhQrhjN4YmA3mjSgqhQrhjN4YmA3mjS@cluster0.vndw3.mongodb.net/test?retryWrites=true&w=majority',
+const MONGO_URI = process.env.MONGO_URI;
+
+mongoose.connect(MONGO_URI,
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
@@ -29,17 +31,13 @@ app.use(bodyParser.json());
 
 app.post('/api/stuff', (req, res, next) => { 
     delete req.body._id;
-    const thing = new Thing({
-        ...req.body
-    });
-
+    const thing = new Thing({...req.body });
     thing.save()
-        .then(() => res.status(201).json({message: 'Objet Bien Enregistré !'}),
-                    console.log("OK !!"))
-        .catch(error => {
-          console.log(error);
-          res.status(400).json({ error });
-      });
+    .then(() => res.status(201).json({message: 'Objet Bien Enregistré !'}))
+    .catch(error => {
+      console.log(error);
+      res.status(400).json({ error });
+    })
 
 });
 

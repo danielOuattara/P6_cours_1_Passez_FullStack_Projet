@@ -1,21 +1,22 @@
+require('dotenv').config();
+// P2C3: Enregistrer er récuperer des données
 
-// P2C4: Completons le CRUD: ajoutons modification & suppression
-
-const express = require('express');  // importe 'express'
+const express = require('express'); // importe 'express'
 const bodyParser = require('body-parser');
-
-const app = express(); //  cree une application express
-const  mongoose = require('mongoose'); // importe Mongoose
-
 const stuffRoutes = require('./routes/stuff.js')
 
-mongoose.connect('mongodb+srv://danielboua:gqhQrhjN4YmA3mjSgqhQrhjN4YmA3mjS@cluster0.vndw3.mongodb.net/test?retryWrites=true&w=majority',
-  { useNewUrlParser: true,
-    useUnifiedTopology: true })
+const app = express(); //  cree une application express
+const mongoose = require('mongoose'); // importe Mongoose
+
+
+const MONGO_URI = process.env.MONGO_URI;
+
+mongoose.connect(MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
-
-
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -23,8 +24,6 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
     next();
 });
-
-
 
 app.use(bodyParser.json());
 app.use('/api/stuff', stuffRoutes)
