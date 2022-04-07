@@ -1,5 +1,3 @@
-// P2C4: Completons le CRUD: ajoutons modification & suppression
-
 
 const http = require('http');  // importer le package de serveur http de Node.js. L'objet 'http' permet de créer un serveur.
 const app  = require ('./app.js');

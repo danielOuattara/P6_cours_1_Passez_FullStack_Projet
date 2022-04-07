@@ -1,10 +1,9 @@
-require('dotenv').config();
 // P2C3: Enregistrer er récuperer des données
 
+require('dotenv').config();
 const express = require('express'); // importe 'express'
 const bodyParser = require('body-parser');
 const stuffRoutes = require('./routes/stuff.js')
-
 const app = express(); //  cree une application express
 const mongoose = require('mongoose'); // importe Mongoose
 

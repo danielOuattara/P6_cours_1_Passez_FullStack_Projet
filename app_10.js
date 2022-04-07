@@ -1,9 +1,8 @@
-require('dotenv').config();
-// P2C2 : schéma de données
+// P2C2 : schéma de données: voir /models on top
 
+require('dotenv').config();
 const express = require('express');  // importe 'express'
 const bodyParser = require('body-parser');
-
 const app = express(); //  cree une application express
 const  mongoose = require('mongoose'); // importe Mongoose
 
@@ -15,7 +14,6 @@ mongoose.connect(MONGO_URI,
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
 
-
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
@@ -23,9 +21,7 @@ app.use((req, res, next) => {
     next();
 });
 
-
 app.use(bodyParser.json());
-
 
 app.post('/api/stuff', (req, res, next) => { 
     console.log(req.body);
@@ -33,7 +29,6 @@ app.post('/api/stuff', (req, res, next) => {
         message: 'objet créé'
     });
 });
-
 
 app.use('/api/stuff', (req, res, next) => {
 
